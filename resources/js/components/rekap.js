@@ -36,14 +36,14 @@ const rekap = () => {
             keluar: "2 Juni 2020, 15.13",
         },
         {
-            key: "1",
+            key: "2",
             name: "John Brown",
             nip: 12312312312312312,
             masuk: "2 Juni 2020, 08.13",
             keluar: "2 Juni 2020, 15.13",
         },
         {
-            key: "1",
+            key: "3",
             name: "John Brown",
             nip: 12312312312312312,
             masuk: "2 Juni 2020, 08.13",
