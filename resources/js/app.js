@@ -21,7 +21,7 @@ import { Layout, Button, Menu } from "antd";
 import { UserOutlined, MoneyCollectOutlined } from "@ant-design/icons";
 import Login from "./components/Login";
 import "antd/dist/antd.css";
-import Home from "./components/Home";
+// import Home from "./components/Home";
 import Axios from "axios";
 import api from "./api/api";
 import "./css/menu.css";
@@ -30,6 +30,7 @@ import rekap from "./components/rekap";
 import gaji from "./components/gaji";
 import totalGaji from "./components/totalGaji";
 import tunjangan from "./components/tunjangan";
+import backgound from "./assets/img/HalamanRekap.svg";
 
 function App() {
     const [verified, setverified] = useState(false);
@@ -122,7 +123,15 @@ function App() {
                             </SubMenu>
                         </Menu>
                     </Sider>
-                    <Layout style={{ padding: "0 24px 24px" }}>
+                    <Layout
+                        style={{
+                            padding: "0 24px 24px",
+                            backgroundImage: `url(${backgound})`,
+                            height: "90vh",
+                            width: "auto",
+                            backgroundSize: "cover"
+                        }}
+                    >
                         <Switch>
                             <Route exact path="/" component={absensi} />
                             <Route path="/rekap" component={rekap} />

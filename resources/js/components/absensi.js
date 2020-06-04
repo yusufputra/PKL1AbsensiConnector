@@ -1,6 +1,7 @@
 import React from "react";
 import { Breadcrumb, Table, Layout, Tag, Space } from "antd";
 
+
 const { Content } = Layout;
 const absensi = () => {
     const columns = [
