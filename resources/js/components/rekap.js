@@ -1,5 +1,5 @@
 import React from "react";
-import { Breadcrumb, Table, Layout, Tag, Space } from "antd";
+import { Breadcrumb, Table, Layout } from "antd";
 
 const { Content } = Layout;
 const rekap = () => {

@@ -18,7 +18,12 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
 import ReactDOM from "react-dom";
 import { Layout, Button, Menu } from "antd";
-import { UserOutlined, MoneyCollectOutlined } from "@ant-design/icons";
+import {
+    UserOutlined,
+    MoneyCollectOutlined,
+    PieChartOutlined,
+    SettingOutlined
+} from "@ant-design/icons";
 import Login from "./components/Login";
 import "antd/dist/antd.css";
 // import Home from "./components/Home";
@@ -31,6 +36,8 @@ import gaji from "./components/gaji";
 import totalGaji from "./components/totalGaji";
 import tunjangan from "./components/tunjangan";
 import backgound from "./assets/img/HalamanRekap.svg";
+import Dashboard from "./components/Dashboard";
+import setting from "./components/setting";
 
 function App() {
     const [verified, setverified] = useState(false);
@@ -88,19 +95,21 @@ function App() {
                         <Menu
                             mode="inline"
                             defaultSelectedKeys={["1"]}
-                            defaultOpenKeys={["sub1"]}
                             style={{ height: "100%", borderRight: 0 }}
                         >
+                            <Menu.Item key="1" icon={<PieChartOutlined />}>
+                                <Link to={"/"}>Dashboard</Link>
+                            </Menu.Item>
                             <SubMenu
                                 key="sub1"
                                 icon={<UserOutlined />}
                                 title="Karyawan"
                             >
-                                <Menu.Item key="1">
-                                    <Link to={"/"}>Absensi</Link>
+                                <Menu.Item key="2">
+                                    <Link to={"/absensi"}>Absensi</Link>
                                 </Menu.Item>
 
-                                <Menu.Item key="2">
+                                <Menu.Item key="3">
                                     <Link to={"/rekap"}>Rekap Absensi</Link>
                                 </Menu.Item>
                             </SubMenu>
@@ -109,18 +118,21 @@ function App() {
                                 icon={<MoneyCollectOutlined />}
                                 title="Data Gaji"
                             >
-                                <Menu.Item key="3">
+                                <Menu.Item key="4">
                                     <Link to={"/gaji"}>Gaji</Link>
                                 </Menu.Item>
 
-                                <Menu.Item key="4">
+                                <Menu.Item key="5">
                                     <Link to={"/tunjangan"}>Tujangan</Link>
                                 </Menu.Item>
 
-                                <Menu.Item key="5">
+                                <Menu.Item key="6">
                                     <Link to={"/totalgaji"}>Total Gaji</Link>
                                 </Menu.Item>
                             </SubMenu>
+                            <Menu.Item key="7" icon={<SettingOutlined />}>
+                                <Link to={"/setting"}>Setting</Link>
+                            </Menu.Item>
                         </Menu>
                     </Sider>
                     <Layout
@@ -133,11 +145,13 @@ function App() {
                         }}
                     >
                         <Switch>
-                            <Route exact path="/" component={absensi} />
+                            <Route exact path="/" component={Dashboard} />
+                            <Route exact path="/absensi" component={absensi} />
                             <Route path="/rekap" component={rekap} />
                             <Route path="/gaji" component={gaji} />
                             <Route path="/tunjangan" component={tunjangan} />
                             <Route path="/totalgaji" component={totalGaji} />
+                            <Route path="/setting" component={setting} />
                         </Switch>
                     </Layout>
                 </Layout>
