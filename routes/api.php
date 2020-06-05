@@ -24,4 +24,5 @@ Route::post('register', 'UserController@register');
 
 Route::group(['middleware' => 'jwt.verify'], function () {
     Route::get('user', 'UserController@getAuthenticatedUser');
+    Route::get('alluser','UserController@getAllUser');
 });

@@ -35,7 +35,7 @@ import rekap from "./components/rekap";
 import gaji from "./components/gaji";
 import totalGaji from "./components/totalGaji";
 import tunjangan from "./components/tunjangan";
-import backgound from "./assets/img/HalamanRekap.svg";
+import backgound from "./assets/img/BGHalaman.svg";
 import Dashboard from "./components/Dashboard";
 import setting from "./components/setting";
 
@@ -43,17 +43,28 @@ function App() {
     const [verified, setverified] = useState(false);
     const [collapsed, setcollapsed] = useState(false);
     useEffect(() => {
-        Axios.get(api.cekToken, {
-            headers: {
-                Authorization: "Bearer " + localStorage.token
-            }
-        })
-            .then(ress => {
-                if (ress.data.status != "Token is Invalid") setverified(true);
+        const checking = async () => {
+            await Axios.get(api.cekToken, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.token
+                }
             })
-            .catch(error => {
-                console.log(error);
-            });
+                .then(ress => {
+                    console.log(ress);
+                    if (ress.data.status != "Token is Invalid") {
+                        setverified(true);
+                    } else {
+                        alert(ress.data.status);
+                        localStorage.clear();
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        };
+        if (localStorage.token != null) {
+            checking();
+        }
     });
 
     if (localStorage.token == null || verified == false) {
@@ -141,7 +152,8 @@ function App() {
                             backgroundImage: `url(${backgound})`,
                             height: "90vh",
                             width: "auto",
-                            backgroundSize: "cover"
+                            backgroundSize: "cover",
+                            backgroundPosition: "bottom"
                         }}
                     >
                         <Switch>

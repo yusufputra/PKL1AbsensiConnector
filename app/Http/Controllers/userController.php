@@ -70,4 +70,9 @@ class userController extends Controller
 
         return response()->json(compact('user'));
     }
+
+    public function getAllUser()
+    {
+        return response()->json(User::get());
+    }
 }
