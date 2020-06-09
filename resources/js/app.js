@@ -51,7 +51,7 @@ function App() {
             })
                 .then(ress => {
                     console.log(ress);
-                    if (ress.data.status != "Token is Invalid") {
+                    if (ress.data.status != "Token is Invalid" || ress.data.status != "Token is Expired" || ress.data.status != "Authorization Token not found") {
                         setverified(true);
                     } else {
                         alert(ress.data.status);
@@ -60,6 +60,7 @@ function App() {
                 })
                 .catch(error => {
                     console.log(error);
+                    localStorage.clear();
                 });
         };
         if (localStorage.token != null) {

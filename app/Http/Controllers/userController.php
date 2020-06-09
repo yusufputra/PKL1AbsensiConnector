@@ -73,6 +73,26 @@ class userController extends Controller
 
     public function getAllUser()
     {
-        return response()->json(User::get());
+        $users = User::get();
+        foreach ($users as $key => $user) {
+            $user->key = $user->id;
+         }
+        return response()->json($users);
+    }
+
+    public function deleteUser(Request $request)
+    {
+        $user = User::where('id', $request->id)->first();
+        if ($user) {
+            $user->delete();
+
+            return response()->json([
+                'message' => 'user berhasil dihapus',
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Data tidak ditemukan',
+            ], 404);
+        }
     }
 }

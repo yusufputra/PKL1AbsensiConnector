@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Breadcrumb, Table, Layout, Tag, Space } from "antd";
 import Axios from "axios";
 import api from "../api/api";
+import { Link } from "react-router-dom";
 
 const { Content } = Layout;
 const setting = () => {
@@ -21,6 +22,11 @@ const setting = () => {
                 alert(error);
             });
     }, []);
+
+    const deleteUser = record => {
+        alert(record);
+    };
+
     const columns = [
         {
             title: "ID",
@@ -39,11 +45,6 @@ const setting = () => {
             key: "email"
         },
         {
-            title: "Email Verified",
-            dataIndex: "email_verified_at",
-            key: "email_verified_at"
-        },
-        {
             title: "Created",
             dataIndex: "created_at",
             key: "created_at"
@@ -56,10 +57,16 @@ const setting = () => {
         {
             title: "Action",
             key: "action",
-            render: (text, record) => (
+            render: record => (
                 <Space size="middle">
-                    <a>Edit</a>
-                    <a>Delete</a>
+                    <Link>Edit</Link>
+                    <Link
+                        onClick={() => {
+                            deleteUser(record.id);
+                        }}
+                    >
+                        Delete
+                    </Link>
                 </Space>
             )
         }
