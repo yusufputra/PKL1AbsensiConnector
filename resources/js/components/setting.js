@@ -24,7 +24,25 @@ const setting = () => {
     }, []);
 
     const deleteUser = record => {
-        alert(record);
+        let body = {
+            id: record
+        };
+        Axios.post(api.deleteUser, body, {
+            headers: {
+                Authorization: "Bearer " + localStorage.token
+            }
+        })
+            .then(ress => {
+                alert("deleted");
+                setdata(
+                    data.filter(item => {
+                        return item.id != record;
+                    })
+                );
+            })
+            .catch(error => {
+                alert(error);
+            });
     };
 
     const columns = [
