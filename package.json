@@ -26,7 +26,11 @@
     },
     "dependencies": {
         "@ant-design/icons": "^4.1.0",
+        "@babel/plugin-proposal-class-properties": "^7.10.1",
         "antd": "^4.2.4",
+        "file-saver": "^2.0.2",
+        "prop-types": "^15.7.2",
+        "react-json-excel": "^1.0.0",
         "react-router-dom": "^5.2.0",
         "recharts": "^1.8.5"
     }
