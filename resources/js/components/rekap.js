@@ -1,7 +1,6 @@
 import React from "react";
 import { Breadcrumb, Table, Layout, Button } from "antd";
-import { JsonToExcel } from "react-json-excel";
-import { DownloadOutlined } from "@ant-design/icons";
+import JsonToExcel from "./JsonToExcel";
 
 const { Content } = Layout;
 const rekap = () => {
@@ -86,12 +85,12 @@ const rekap = () => {
                             <span
                                 role="img"
                                 aria-label="download"
-                                class="anticon anticon-download"
+                                className="anticon anticon-download"
                             >
                                 <svg
                                     viewBox="64 64 896 896"
                                     focusable="false"
-                                    class=""
+                                    className=""
                                     data-icon="download"
                                     width="1em"
                                     height="1em"
