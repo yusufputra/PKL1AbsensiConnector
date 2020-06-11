@@ -38,6 +38,7 @@ import tunjangan from "./components/tunjangan";
 import backgound from "./assets/img/BGHalaman.svg";
 import Dashboard from "./components/Dashboard";
 import setting from "./components/setting";
+import tambahUser from "./components/tambahUser";
 
 function App() {
     const [verified, setverified] = useState(false);
@@ -51,7 +52,11 @@ function App() {
             })
                 .then(ress => {
                     console.log(ress);
-                    if (ress.data.status != "Token is Invalid" || ress.data.status != "Token is Expired" || ress.data.status != "Authorization Token not found") {
+                    if (
+                        ress.data.status != "Token is Invalid" ||
+                        ress.data.status != "Token is Expired" ||
+                        ress.data.status != "Authorization Token not found"
+                    ) {
                         setverified(true);
                     } else {
                         alert(ress.data.status);
@@ -165,6 +170,7 @@ function App() {
                             <Route path="/tunjangan" component={tunjangan} />
                             <Route path="/totalgaji" component={totalGaji} />
                             <Route path="/setting" component={setting} />
+                            <Route path="/tambahUser" component={tambahUser} />
                         </Switch>
                     </Layout>
                 </Layout>

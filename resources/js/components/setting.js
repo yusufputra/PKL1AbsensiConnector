@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Breadcrumb, Table, Layout, Tag, Space } from "antd";
+import { Breadcrumb, Table, Layout, Space, Button } from "antd";
+import { UserAddOutlined } from "@ant-design/icons";
 import Axios from "axios";
 import api from "../api/api";
 import { Link } from "react-router-dom";
@@ -103,6 +104,9 @@ const setting = () => {
                     minHeight: 280
                 }}
             >
+                <Link to={"/tambahUser"}><Button type="primary" icon={<UserAddOutlined />}>
+                    Tambah User
+                </Button></Link>
                 <Table columns={columns} dataSource={data} />
             </Content>
         </div>
