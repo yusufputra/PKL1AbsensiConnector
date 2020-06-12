@@ -37,13 +37,22 @@ const editUser = () => {
             });
     }, []);
     const onFinish = values => {
-        Axios.post(api.register, values, {
+        const body = {
+            id: id,
+            name: values.name,
+            email: values.email,
+            oldpassword: values.oldpassword,
+            newpassword: values.newpassword,
+            newpassword_confirmation: values.newpassword_confirmation
+        };
+        console.log(body);
+        Axios.post(api.editUser, body, {
             headers: {
                 Authorization: "Bearer " + localStorage.token
             }
         })
             .then(ress => {
-                alert("User Added");
+                alert("User edited");
                 history.push("/setting");
             })
             .catch(error => {
@@ -81,7 +90,7 @@ const editUser = () => {
                         name="name"
                         rules={[
                             {
-                                required: true,
+                                required: false,
                                 message: "Please input your name!"
                             }
                         ]}
@@ -93,7 +102,7 @@ const editUser = () => {
                         name="email"
                         rules={[
                             {
-                                required: true,
+                                required: false,
                                 message: "Please input your email!"
                             }
                         ]}
@@ -101,11 +110,23 @@ const editUser = () => {
                         <Input />
                     </Form.Item>
                     <Form.Item
-                        label="Password"
-                        name="password"
+                        label="Old Password"
+                        name="oldpassword"
                         rules={[
                             {
-                                required: true,
+                                required: false,
+                                message: "Please input your old password!"
+                            }
+                        ]}
+                    >
+                        <Input.Password />
+                    </Form.Item>
+                    <Form.Item
+                        label="New Password"
+                        name="newpassword"
+                        rules={[
+                            {
+                                required: false,
                                 message: "Please input your password!"
                             }
                         ]}
@@ -113,11 +134,11 @@ const editUser = () => {
                         <Input.Password />
                     </Form.Item>
                     <Form.Item
-                        label="Confirmation Password"
-                        name="password_confirmation"
+                        label="Confirmation New Password"
+                        name="newpassword_confirmation"
                         rules={[
                             {
-                                required: true,
+                                required: false,
                                 message: "Please input your password again!"
                             }
                         ]}

@@ -31,4 +31,5 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     //post route
     Route::post('deleteuser', 'UserController@deleteUser');
     Route::post('register', 'UserController@register');
+    Route::post('edituser', 'UserController@editUser');
 });

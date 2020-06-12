@@ -6,7 +6,8 @@ const API_CONSTANT_MAP = {
     "cekToken": `${BASE_API}/user`,
     "allUser": `${BASE_API}/alluser`,
     "deleteUser" : `${BASE_API}/deleteuser`,
-    "getSpecified" : `${BASE_API}/user/`
+    "getSpecified" : `${BASE_API}/user/`,
+    "editUser" : `${BASE_API}/edituser`
 }
 
 module.exports=API_CONSTANT_MAP;

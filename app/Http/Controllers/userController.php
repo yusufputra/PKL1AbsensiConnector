@@ -110,4 +110,63 @@ class userController extends Controller
             ], 404);
         }
     }
+
+    public function editUser(Request $request)
+    {
+        if ($request->oldpassword == null || $request->newpassword == null) {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 400);
+            }
+
+            $user = User::where('id', $request->id)->first();
+            if($user){
+                $user->email =  $request->email;
+                $user->name = $request->name;
+                $user->save();
+                return response()->json(["message" => "success", "user" => $user],200);
+            }else{
+                return response()->json(["message" => "user tidak ditemukan"],404);
+            }
+
+        } else {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255',
+                'oldpassword' => 'required|string|min:6',
+                'newpassword' => 'required|string|min:6|confirmed',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 400);
+            }
+
+            $user = User::where('id', $request->id)->first();
+            if($user){
+                if(Hash::check($request->oldpassword, $user->password)){
+                    $user->email =  $request->email;
+                    $user->name = $request->name;
+                    $user->password = Hash::make($request->newpassword);
+                    $user->save();
+                    return response()->json(["message" => "success", "user" => $user],200);
+                }else{
+                    return response()->json(["message" => "password tidak sesuai"],400);
+                }
+
+            }else{
+                return response()->json(["message" => "user tidak ditemukan"],404);
+            }
+        }
+        // if()
+        // $validator = Validator::make($request->all(), [
+        //     'name' => 'required|string|max:255',
+        //     'email' => 'required|string|email|max:255|unique:users',
+        //     'oldpassword' => 'string|min:6',
+        //     'newpassword' => 'string|min:6'
+        // ]);
+    }
 }
