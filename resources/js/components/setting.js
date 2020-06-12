@@ -78,7 +78,7 @@ const setting = () => {
             key: "action",
             render: record => (
                 <Space size="middle">
-                    <Link>Edit</Link>
+                    <Link to={`/editUser/${record.id}`}>Edit</Link>
                     <Link
                         onClick={() => {
                             deleteUser(record.id);

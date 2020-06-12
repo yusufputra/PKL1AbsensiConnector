@@ -39,6 +39,7 @@ import backgound from "./assets/img/BGHalaman.svg";
 import Dashboard from "./components/Dashboard";
 import setting from "./components/setting";
 import tambahUser from "./components/tambahUser";
+import editUser from "./components/editUser";
 
 function App() {
     const [verified, setverified] = useState(false);
@@ -171,6 +172,7 @@ function App() {
                             <Route path="/totalgaji" component={totalGaji} />
                             <Route path="/setting" component={setting} />
                             <Route path="/tambahUser" component={tambahUser} />
+                            <Route path="/editUser/:id" component={editUser} />
                         </Switch>
                     </Layout>
                 </Layout>

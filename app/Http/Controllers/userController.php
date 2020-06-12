@@ -36,7 +36,7 @@ class userController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+            return response()->json($validator->errors(), 400);
         }
 
         $user = User::create([
@@ -76,7 +76,7 @@ class userController extends Controller
         $users = User::get();
         foreach ($users as $key => $user) {
             $user->key = $user->id;
-         }
+        }
         return response()->json($users);
     }
 
@@ -88,6 +88,21 @@ class userController extends Controller
 
             return response()->json([
                 'message' => 'user berhasil dihapus',
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Data tidak ditemukan',
+            ], 404);
+        }
+    }
+
+    public function getSpecifiedById($id)
+    {
+        $user = User::where('id', $id)->first();
+        if ($user) {
+            return response()->json([
+                'message' => 'ketemu nih',
+                'user' => $user
             ]);
         } else {
             return response()->json([

@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Breadcrumb, Form, Layout, Input, Button, Checkbox } from "antd";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import Axios from "axios";
 import api from "../api/api";
 
@@ -12,8 +12,30 @@ const layout = {
 const tailLayout = {
     wrapperCol: { offset: 4, span: 10 }
 };
-const tambahUser = () => {
+const editUser = () => {
+    let { id } = useParams();
     const history = useHistory();
+    // const [data, setdata] = useState({ email: "test dulu", name: "test aja" });
+    const [form] = Form.useForm();
+    useEffect(() => {
+        Axios.get(api.getSpecified + id, {
+            headers: {
+                Authorization: "Bearer " + localStorage.token
+            }
+        })
+            .then(ress => {
+                console.log(ress.data.user);
+                // setdata(ress.data.user);
+                form.setFieldsValue({
+                    email: ress.data.user.email,
+                    name: ress.data.user.name
+                });
+            })
+            .catch(error => {
+                console.log(error);
+                alert(error);
+            });
+    }, []);
     const onFinish = values => {
         Axios.post(api.register, values, {
             headers: {
@@ -37,7 +59,7 @@ const tambahUser = () => {
         <div>
             <Breadcrumb style={{ margin: "16px 0" }}>
                 <Breadcrumb.Item>Setting</Breadcrumb.Item>
-                <Breadcrumb.Item>Tambah User</Breadcrumb.Item>
+                <Breadcrumb.Item>Edit User</Breadcrumb.Item>
             </Breadcrumb>
             <Content
                 className="site-layout-background"
@@ -50,9 +72,9 @@ const tambahUser = () => {
                 <Form
                     {...layout}
                     name="basic"
-                    initialValues={{ remember: true }}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
+                    form={form}
                 >
                     <Form.Item
                         label="fullname"
@@ -114,4 +136,4 @@ const tambahUser = () => {
     );
 };
 
-export default tambahUser;
+export default editUser;
