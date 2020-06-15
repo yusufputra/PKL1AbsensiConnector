@@ -19,6 +19,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('login', 'UserController@login');
+Route::post('{member_id}/absen', 'absenController@inputAbsen');
+Route::get('getDataAbsen/{Sno}', 'absenController@getDataBySerialNum');
 // Route::get('user', 'UserController@getAuthenticatedUser')->middleware('jwt.verify');
 
 Route::group(['middleware' => 'jwt.verify'], function () {
@@ -32,4 +34,5 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::post('deleteuser', 'UserController@deleteUser');
     Route::post('register', 'UserController@register');
     Route::post('edituser', 'UserController@editUser');
+
 });
