@@ -30,6 +30,11 @@ class absenController extends Controller
         return response()->json(['message' => "success", "data" => $absen]);
     }
 
+    public function getAllAbsen()
+    {
+        return response()->json(dataAbsen::get());
+    }
+
     public function getDataBySerialNum($Sno)
     {
         $data = dataAbsen::where('serial_no', $Sno)->get();
