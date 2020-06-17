@@ -4,7 +4,8 @@ Installation steps
 3. generate app_key using command "php artisan key:generate"
 4. generate jwt_secrete using command "php artisan jwt:secret"
 5. setting database config on .env
-6. ready to launch with "php artisan serve"
+6. migrate db schema with seed "php artisan migrate --seed", u can finde seeder account on "/app/database/seeds/adminUser.php"
+7. ready to launch with "php artisan serve"
 
 <p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
 
