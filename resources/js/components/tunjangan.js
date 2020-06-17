@@ -11,42 +11,31 @@ const tunjangan = () => {
             render: text => <a>{text}</a>
         },
         {
-            title: "Age",
-            dataIndex: "age",
-            key: "age"
+            title: "Jabatan",
+            dataIndex: "jabatan",
+            key: "jabatan"
         },
         {
-            title: "Address",
-            dataIndex: "address",
-            key: "address"
+            title: "Gaji Pokok",
+            dataIndex: "pokok",
+            key: "pokok"
         },
         {
-            title: "Tags",
-            key: "tags",
-            dataIndex: "tags",
-            render: tags => (
-                <>
-                    {tags.map(tag => {
-                        let color = tag.length > 5 ? "geekblue" : "green";
-                        if (tag === "loser") {
-                            color = "volcano";
-                        }
-                        return (
-                            <Tag color={color} key={tag}>
-                                {tag.toUpperCase()}
-                            </Tag>
-                        );
-                    })}
-                </>
-            )
+            title: "Tunjangan",
+            dataIndex: "tunjangan",
+            key: "tunjangan"
+        },
+        {
+            title: "Total Gaji",
+            dataIndex: "total",
+            key: "total"
         },
         {
             title: "Action",
             key: "action",
             render: (text, record) => (
                 <Space size="middle">
-                    <a>Invite {record.name}</a>
-                    <a>Delete</a>
+                    <a>Detail</a>
                 </Space>
             )
         }
@@ -56,24 +45,27 @@ const tunjangan = () => {
         {
             key: "1",
             name: "John Brown",
-            age: 32,
-            address: "New York No. 1 Lake Park",
-            tags: ["nice", "developer"]
+            jabatan: "CEO",
+            pokok: "Rp 10.000.000",
+            tunjangan: "Rp 5.000.000",
+            total: "Rp 15.000.000"
         },
         {
             key: "2",
-            name: "Jim Green",
-            age: 42,
-            address: "London No. 1 Lake Park",
-            tags: ["loser"]
+            name: "John Brown",
+            jabatan: "CEO",
+            pokok: "Rp 10.000.000",
+            tunjangan: "Rp 5.000.000",
+            total: "Rp 15.000.000"
         },
         {
             key: "3",
-            name: "Joe Black",
-            age: 32,
-            address: "Sidney No. 1 Lake Park",
-            tags: ["cool", "teacher"]
-        }
+            name: "John Brown",
+            jabatan: "CEO",
+            pokok: "Rp 10.000.000",
+            tunjangan: "Rp 5.000.000",
+            total: "Rp 15.000.000"
+        },
     ];
     return (
         <div>

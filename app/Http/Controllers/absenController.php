@@ -32,16 +32,20 @@ class absenController extends Controller
 
     public function getAllAbsen()
     {
-        return response()->json(dataAbsen::get());
+        $absens = dataAbsen::get();
+        foreach ($absens as $key => $absen) {
+            $absen->key = $absen->id;
+        }
+        return response()->json($absens);
     }
 
-    public function getDataBySerialNum($Sno)
-    {
-        $data = dataAbsen::where('serial_no', $Sno)->get();
-        if(sizeof($data)>0){
-            return response()->json(['data' => $data],200);
-        }else{
-            return response()->json(['error' => "data tidak ditemukan"],404);
-        }
-    }
+    // public function getDataBySerialNum($Sno)
+    // {
+    //     $data = dataAbsen::where('serial_no', $Sno)->get();
+    //     if(sizeof($data)>0){
+    //         return response()->json(['data' => $data],200);
+    //     }else{
+    //         return response()->json(['error' => "data tidak ditemukan"],404);
+    //     }
+    // }
 }
