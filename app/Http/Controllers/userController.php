@@ -15,16 +15,20 @@ class userController extends Controller
 {
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
         try {
-            if (!$token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'Invalid email or password'], 400);
+            $credentials = $request->only('email', 'password');
+            try {
+                if (!$token = JWTAuth::attempt($credentials)) {
+                    return response()->json(['error' => 'Invalid email or password'], 400);
+                }
+            } catch (JWTException $e) {
+                return response()->json(['error' => 'could_not_create_token'], 500);
             }
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'could_not_create_token'], 500);
-        }
 
-        return response()->json(compact('token'));
+            return response()->json(compact('token'));
+        } catch (\Throwable $th) {
+            dd($th);
+        }
     }
 
     public function register(Request $request)
@@ -124,15 +128,14 @@ class userController extends Controller
             }
 
             $user = User::where('id', $request->id)->first();
-            if($user){
+            if ($user) {
                 $user->email =  $request->email;
                 $user->name = $request->name;
                 $user->save();
-                return response()->json(["message" => "success", "user" => $user],200);
-            }else{
-                return response()->json(["message" => "user tidak ditemukan"],404);
+                return response()->json(["message" => "success", "user" => $user], 200);
+            } else {
+                return response()->json(["message" => "user tidak ditemukan"], 404);
             }
-
         } else {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
@@ -146,19 +149,18 @@ class userController extends Controller
             }
 
             $user = User::where('id', $request->id)->first();
-            if($user){
-                if(Hash::check($request->oldpassword, $user->password)){
+            if ($user) {
+                if (Hash::check($request->oldpassword, $user->password)) {
                     $user->email =  $request->email;
                     $user->name = $request->name;
                     $user->password = Hash::make($request->newpassword);
                     $user->save();
-                    return response()->json(["message" => "success", "user" => $user],200);
-                }else{
-                    return response()->json(["message" => "password tidak sesuai"],400);
+                    return response()->json(["message" => "success", "user" => $user], 200);
+                } else {
+                    return response()->json(["message" => "password tidak sesuai"], 400);
                 }
-
-            }else{
-                return response()->json(["message" => "user tidak ditemukan"],404);
+            } else {
+                return response()->json(["message" => "user tidak ditemukan"], 404);
             }
         }
         // if()
