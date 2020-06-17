@@ -1,3 +1,11 @@
+Installation steps
+1. pull / clone this repository
+2. make .env based on .env.example
+3. generate app_key using command "php artisan key:generate"
+4. generate jwt_secrete using command "php artisan jwt:secret"
+5. setting database config on .env
+6. ready to launch with "php artisan serve"
+
 <p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
 
 <p align="center">
