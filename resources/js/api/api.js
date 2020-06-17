@@ -1,4 +1,4 @@
-const BASE_API='http://localhost:8000/api';
+const BASE_API=`/api`;
 
 const API_CONSTANT_MAP = {
     "login": `${BASE_API}/login`,
