@@ -1,11 +1,19 @@
 Installation steps
 1. pull / clone this repository
-2. make .env based on .env.example
-3. generate app_key using command "php artisan key:generate"
-4. generate jwt_secrete using command "php artisan jwt:secret"
-5. setting database config on .env
-6. migrate db schema with seed "php artisan migrate --seed", u can finde seeder account on "/app/database/seeds/adminUser.php"
-7. ready to launch with "php artisan serve"
+2. do "composer install"
+3. make .env based on .env.example
+4. generate app_key using command "php artisan key:generate"
+5. generate jwt_secrete using command "php artisan jwt:secret"
+6. setting database config on .env
+7. migrate db schema with seed "php artisan migrate --seed", u can finde seeder account on "/app/database/seeds/adminUser.php"
+8. ready to launch with "php artisan serve"
+
+if you wanna try to edit the code
+1. make sure you already installed nodejs
+2. do "npm install" for install the node_modules
+3. you can find the code at "/resources/js"
+4. everytime u change the code, u have to compile it to run it
+5. compile the code with "npm run dev" or u can see "package.json" for another node script
 
 <p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
 
