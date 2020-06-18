@@ -29,11 +29,14 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::get('user', 'UserController@getAuthenticatedUser');
     Route::get('alluser','UserController@getAllUser');
     Route::get('user/{id}','UserController@getSpecifiedById');
+    Route::get('absen/{id}','absenController@getSpecifiedById');
 
 
     //post route
     Route::post('deleteuser', 'UserController@deleteUser');
     Route::post('register', 'UserController@register');
     Route::post('edituser', 'UserController@editUser');
+    Route::post('deleteabsen', 'absenController@deleteAbsen');
+    Route::post('editabsen', 'absenController@editAbsen');
 
 });

@@ -36,6 +36,7 @@ class userController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'role' => 'boolean',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
@@ -120,6 +121,7 @@ class userController extends Controller
         if ($request->oldpassword == null || $request->newpassword == null) {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
+                'role' => 'boolean',
                 'email' => 'required|string|email|max:255',
             ]);
 
@@ -131,6 +133,7 @@ class userController extends Controller
             if ($user) {
                 $user->email =  $request->email;
                 $user->name = $request->name;
+                $user->role = $request->role;
                 $user->save();
                 return response()->json(["message" => "success", "user" => $user], 200);
             } else {
@@ -140,6 +143,7 @@ class userController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255',
+                'role' => 'boolean',
                 'oldpassword' => 'required|string|min:6',
                 'newpassword' => 'required|string|min:6|confirmed',
             ]);
@@ -153,6 +157,7 @@ class userController extends Controller
                 if (Hash::check($request->oldpassword, $user->password)) {
                     $user->email =  $request->email;
                     $user->name = $request->name;
+                    $user->role = $request->role;
                     $user->password = Hash::make($request->newpassword);
                     $user->save();
                     return response()->json(["message" => "success", "user" => $user], 200);

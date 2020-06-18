@@ -14,7 +14,7 @@ require("./bootstrap");
 
 require("./components/Example");
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
 import ReactDOM from "react-dom";
 import { Layout, Button, Menu } from "antd";
@@ -40,39 +40,48 @@ import Dashboard from "./components/Dashboard";
 import setting from "./components/setting";
 import tambahUser from "./components/tambahUser";
 import editUser from "./components/editUser";
+import AuthContextProvider, { UserContext } from "./authContextProvider";
+import tambahAbsensi from "./components/tambahAbsensi";
+import editAbsensi from "./components/editAbsensi";
 
 function App() {
-    const [verified, setverified] = useState(false);
+    // const [verified, setverified] = useState(false);
     const [collapsed, setcollapsed] = useState(false);
-    useEffect(() => {
-        const checking = async () => {
-            await Axios.get(api.cekToken, {
-                headers: {
-                    Authorization: "Bearer " + localStorage.token
-                }
-            })
-                .then(ress => {
-                    console.log(ress);
-                    if (
-                        ress.data.status != "Token is Invalid" ||
-                        ress.data.status != "Token is Expired" ||
-                        ress.data.status != "Authorization Token not found"
-                    ) {
-                        setverified(true);
-                    } else {
-                        alert(ress.data.status);
-                        localStorage.clear();
-                    }
-                })
-                .catch(error => {
-                    console.log(error);
-                    localStorage.clear();
-                });
-        };
-        if (localStorage.token != null) {
-            checking();
-        }
-    });
+    // const [user, setUser] = useState({});
+    const { user, verified } = useContext(UserContext);
+    // useEffect(() => {
+    //     const checking = async () => {
+    //         await Axios.get(api.cekToken, {
+    //             headers: {
+    //                 Authorization: "Bearer " + localStorage.token
+    //             }
+    //         })
+    //             .then(ress => {
+    //                 console.log(ress);
+    //                 if (
+    //                     ress.data.status != "Token is Invalid" ||
+    //                     ress.data.status != "Token is Expired" ||
+    //                     ress.data.status != "Authorization Token not found"
+    //                 ) {
+    //                     setverified(true);
+    //                     setUser(ress.data.user);
+    //                     console.log(user);
+    //                 } else {
+    //                     alert(ress.data.status);
+    //                     localStorage.clear();
+    //                 }
+    //             })
+    //             .catch(error => {
+    //                 console.log(error);
+    //                 localStorage.clear();
+    //             });
+    //     };
+    //     if (localStorage.token != null) {
+    //         checking();
+    //     }
+    // });
+    console.log(user);
+    console.log(verified);
 
     if (localStorage.token == null || verified == false) {
         return (
@@ -173,6 +182,14 @@ function App() {
                             <Route path="/setting" component={setting} />
                             <Route path="/tambahUser" component={tambahUser} />
                             <Route path="/editUser/:id" component={editUser} />
+                            <Route
+                                path="/tambahAbsensi"
+                                component={tambahAbsensi}
+                            />
+                            <Route
+                                path="/editAbsensi/:id"
+                                component={editAbsensi}
+                            />
                         </Switch>
                     </Layout>
                 </Layout>
@@ -185,7 +202,9 @@ export default App;
 
 ReactDOM.render(
     <BrowserRouter>
-        <App />
+        <AuthContextProvider>
+            <App />
+        </AuthContextProvider>
     </BrowserRouter>,
     document.getElementById("app")
 );

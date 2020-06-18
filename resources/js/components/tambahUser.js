@@ -1,9 +1,10 @@
 import React from "react";
-import { Breadcrumb, Form, Layout, Input, Button, Checkbox } from "antd";
+import { Breadcrumb, Form, Layout, Input, Button, Select } from "antd";
 import { useHistory } from "react-router-dom";
 import Axios from "axios";
 import api from "../api/api";
 
+const { Option } = Select;
 const { Content } = Layout;
 const layout = {
     labelCol: { span: 4 },
@@ -15,7 +16,14 @@ const tailLayout = {
 const tambahUser = () => {
     const history = useHistory();
     const onFinish = values => {
-        Axios.post(api.register, values, {
+        const body = {
+            email: values.email,
+            name: values.name,
+            password: values.password,
+            password_confirmation: values.password_confirmation,
+            role: values.role || 0
+        };
+        Axios.post(api.register, body, {
             headers: {
                 Authorization: "Bearer " + localStorage.token
             }
@@ -77,6 +85,12 @@ const tambahUser = () => {
                         ]}
                     >
                         <Input />
+                    </Form.Item>
+                    <Form.Item label="Role" name="role">
+                        <Select defaultValue="admin" style={{ width: 240 }}>
+                            <Option value={0}>admin</Option>
+                            <Option value={1}>super admin</Option>
+                        </Select>
                     </Form.Item>
                     <Form.Item
                         label="Password"

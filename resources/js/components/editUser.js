@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Breadcrumb, Form, Layout, Input, Button, Checkbox } from "antd";
+import { Breadcrumb, Form, Layout, Input, Button, Select } from "antd";
 import { useHistory, useParams } from "react-router-dom";
 import Axios from "axios";
 import api from "../api/api";
 
+const { Option } = Select;
 const { Content } = Layout;
 const layout = {
     labelCol: { span: 4 },
@@ -28,7 +29,8 @@ const editUser = () => {
                 // setdata(ress.data.user);
                 form.setFieldsValue({
                     email: ress.data.user.email,
-                    name: ress.data.user.name
+                    name: ress.data.user.name,
+                    role: ress.data.user.role == 0 ? "admin" : "super admin"
                 });
             })
             .catch(error => {
@@ -41,6 +43,12 @@ const editUser = () => {
             id: id,
             name: values.name,
             email: values.email,
+            role:
+                values.role == "admin" ||
+                values.role == 0 ||
+                values.role == undefined
+                    ? 0
+                    : 1,
             oldpassword: values.oldpassword,
             newpassword: values.newpassword,
             newpassword_confirmation: values.newpassword_confirmation
@@ -108,6 +116,12 @@ const editUser = () => {
                         ]}
                     >
                         <Input />
+                    </Form.Item>
+                    <Form.Item label="Role" name="role">
+                        <Select defaultValue="admin" style={{ width: 240 }}>
+                            <Option value={0}>admin</Option>
+                            <Option value={1}>super admin</Option>
+                        </Select>
                     </Form.Item>
                     <Form.Item
                         label="Old Password"

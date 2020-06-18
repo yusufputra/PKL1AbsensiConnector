@@ -39,6 +39,61 @@ class absenController extends Controller
         return response()->json($absens);
     }
 
+    public function deleteAbsen(Request $request)
+    {
+        $data = dataAbsen::where('id', $request->id)->first();
+        if ($data) {
+            $data->delete();
+
+            return response()->json([
+                'message' => 'user berhasil dihapus',
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Data tidak ditemukan',
+            ], 404);
+        }
+    }
+
+    public function getSpecifiedById($id)
+    {
+        $data = dataAbsen::where('id', $id)->first();
+        if ($data) {
+            return response()->json([
+                'message' => 'ketemu nih',
+                'user' => $data
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Data tidak ditemukan',
+            ], 404);
+        }
+    }
+
+    public function editAbsen(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'idKaryawan' => 'required|integer',
+            'date' => 'required|string',
+            'serial_no' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        $data = dataAbsen::where('id', $request->id)->first();
+            if ($data) {
+                $data->idKaryawan =  $request->idKaryawan;
+                $data->date = $request->date;
+                $data->serial_no = $request->serial_no;
+                $data->save();
+                return response()->json(["message" => "success", "user" => $data], 200);
+            } else {
+                return response()->json(["message" => "data tidak ditemukan"], 404);
+            }
+    }
+
     // public function getDataBySerialNum($Sno)
     // {
     //     $data = dataAbsen::where('serial_no', $Sno)->get();

@@ -30,6 +30,7 @@
         "@babel/plugin-syntax-class-properties": "^7.10.1",
         "antd": "^4.2.4",
         "file-saver": "^2.0.2",
+        "moment": "^2.26.0",
         "postcss-loader": "^3.0.0",
         "prop-types": "^15.7.2",
         "react-json-excel": "^1.0.0",

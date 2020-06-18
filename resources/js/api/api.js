@@ -8,7 +8,10 @@ const API_CONSTANT_MAP = {
     "deleteUser" : `${BASE_API}/deleteuser`,
     "getSpecified" : `${BASE_API}/user/`,
     "editUser" : `${BASE_API}/edituser`,
-    "getAllAbsen" : `${BASE_API}/getAllAbsen`
+    "getAllAbsen" : `${BASE_API}/getAllAbsen`,
+    "deleteAbsen" : `${BASE_API}/deleteabsen`,
+    "getAbsenbyId" : `${BASE_API}/absen/`,
+    "editAbsen" : `${BASE_API}/editabsen`,
 }
 
 module.exports=API_CONSTANT_MAP;
