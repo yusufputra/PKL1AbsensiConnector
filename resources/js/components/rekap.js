@@ -1,17 +1,140 @@
-import React, { useEffect, useState } from "react";
-import { Breadcrumb, Table, Layout, Button } from "antd";
+import React, { useEffect, useState, useContext } from "react";
+import {
+    Breadcrumb,
+    Table,
+    Layout,
+    Button,
+    DatePicker,
+    Space,
+    Select,
+    Tag
+} from "antd";
 import JsonToExcel from "./JsonToExcel";
 import Axios from "axios";
 import api from "../api/api";
+import { UserContext } from "../authContextProvider";
 
 const { Content } = Layout;
+const { Option } = Select;
 const rekap = () => {
+    const { user } = useContext(UserContext);
+    const [state, setState] = useState({
+        datee: "",
+        dataa: "semua"
+    });
+    const [tempdata, setTempdata] = useState([]);
     const [data, setdata] = useState([]);
+    function dateFilter(date, dateString) {
+        console.log(date, dateString);
+        setState({
+            datee: dateString,
+            dataa: state.dataa
+        });
+        console.log(state);
+        if (dateString == "") {
+            if (state.dataa == true) {
+                setTempdata(
+                    data.filter(item => {
+                        return item.date.split(" ")[1].split(":")[0] >= 8;
+                    })
+                );
+            } else if (state.dataa == false) {
+                setTempdata(
+                    data.filter(item => {
+                        return item.date.split(" ")[1].split(":")[0] < 8;
+                    })
+                );
+            } else {
+                setTempdata(data);
+            }
+        } else {
+            if (state.dataa == true) {
+                setTempdata(
+                    data.filter(item => {
+                        return (
+                            item.date.split(" ")[0] == dateString &&
+                            item.date.split(" ")[1].split(":")[0] >= 8
+                        );
+                    })
+                );
+            } else if (state.dataa == false) {
+                setTempdata(
+                    data.filter(item => {
+                        return (
+                            item.date.split(" ")[0] == dateString &&
+                            item.date.split(" ")[1].split(":")[0] < 8
+                        );
+                    })
+                );
+            } else {
+                setTempdata(
+                    data.filter(item => {
+                        return item.date.split(" ")[0] == dateString;
+                    })
+                );
+            }
+        }
+        console.log(data);
+    }
+    function dataFilter(value) {
+        setState({
+            datee: state.datee,
+            dataa: value
+        });
+        console.log(value);
+        if (state.datee == "") {
+            if (value == true) {
+                console.log("he1")
+                setTempdata(
+                    data.filter(item => {
+                        return item.date.split(" ")[1].split(":")[0] >= 8;
+                    })
+                );
+            } else if (value == false) {
+                console.log("he3")
+                setTempdata(
+                    data.filter(item => {
+                        return item.date.split(" ")[1].split(":")[0] < 8;
+                    })
+                );
+            } else {
+                console.log("heo")
+                setTempdata(data);
+            }
+        } else {
+            if (value == true) {
+                setTempdata(
+                    data.filter(item => {
+                        return (
+                            item.date.split(" ")[0] == state.datee &&
+                            item.date.split(" ")[1].split(":")[0] >= 8
+                        );
+                    })
+                );
+            } else if (value == false) {
+                setTempdata(
+                    data.filter(item => {
+                        return (
+                            item.date.split(" ")[0] == state.datee &&
+                            item.date.split(" ")[1].split(":")[0] < 8
+                        );
+                    })
+                );
+            } else {
+                setTempdata(
+                    data.filter(item => {
+                        return item.date.split(" ")[0] == state.datee;
+                    })
+                );
+            }
+        }
+    }
     useEffect(() => {
         Axios.get(api.getAllAbsen)
             .then(ress => {
                 console.log(ress);
                 setdata(ress.data);
+                setTempdata(ress.data);
             })
             .catch(error => {
                 console.log(error);
@@ -26,13 +149,22 @@ const rekap = () => {
         },
         {
             title: "ID Member",
-            dataIndex: "idKaryawan",
-            key: "idKaryawan"
+            dataIndex: "nik",
+            key: "nik"
         },
         {
             title: "Date",
             dataIndex: "date",
             key: "date"
+        },
+        {
+            title: "Late Tag",
+            dataIndex: "date",
+            key: "date",
+            render: date => {
+                const hour = date.split(" ")[1].split(":")[0];
+                return hour >= 8 && <Tag color={"red"}>Late</Tag>;
+            }
         },
         {
             title: "Serial Number",
@@ -65,10 +197,10 @@ const rekap = () => {
                     minHeight: 280
                 }}
             >
-                {data.length != 0 && (
+                {tempdata.length != 0 && user.role == 1 && (
                     <JsonToExcel
                         id={"exportXLS"}
-                        data={data}
+                        data={tempdata}
                         filename={filename}
                         fields={fields}
                         className={"ant-btn ant-btn-primary"}
@@ -97,7 +229,23 @@ const rekap = () => {
                         }
                     />
                 )}
-                <Table columns={columns} dataSource={data} />
+                <br />
+                <Space style={{ marginTop: 10 }}>
+                    Filter Date
+                    <DatePicker onChange={dateFilter} />
+                    Data :
+                    <Select
+                        placeholder="All"
+                        style={{ width: 120 }}
+                        onChange={dataFilter}
+                    >
+                        <Option value={"semua"}>All</Option>
+                        <Option value={false}>On Time</Option>
+                        <Option value={true}>Late</Option>
+                    </Select>
+                    Total Data : {tempdata.length}
+                </Space>
+                <Table columns={columns} dataSource={tempdata} />
             </Content>
         </div>
     );

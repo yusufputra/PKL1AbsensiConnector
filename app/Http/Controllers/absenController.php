@@ -13,7 +13,7 @@ class absenController extends Controller
     public function inputAbsen($id, Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id' => 'required|integer',
+            'id' => 'required|string',
             'date' => 'required|string',
             'serial_no' => 'required|string',
         ]);
@@ -22,7 +22,7 @@ class absenController extends Controller
             return response()->json($validator->errors(), 400);
         }
         $absen = dataAbsen::create([
-            'idKaryawan' => $request->id,
+            'nik' => $request->id,
             'date' => $request->date,
             'serial_no' => $request->serial_no,
         ]);
@@ -73,7 +73,8 @@ class absenController extends Controller
     public function editAbsen(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'idKaryawan' => 'required|integer',
+            'id' => 'required|string',
+            'nik' => 'required|string',
             'date' => 'required|string',
             'serial_no' => 'required|string',
         ]);
@@ -84,7 +85,7 @@ class absenController extends Controller
 
         $data = dataAbsen::where('id', $request->id)->first();
             if ($data) {
-                $data->idKaryawan =  $request->idKaryawan;
+                $data->nik =  $request->nik;
                 $data->date = $request->date;
                 $data->serial_no = $request->serial_no;
                 $data->save();

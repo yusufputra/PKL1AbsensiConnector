@@ -39,7 +39,7 @@ const editAbsensi = () => {
                 console.log(ress.data.user);
                 setDatestring(ress.data.user.date);
                 form.setFieldsValue({
-                    id: ress.data.user.idKaryawan,
+                    id: ress.data.user.nik,
                     date: moment(ress.data.user.date, "MMMM Do YYYY h:mm:ss"),
                     serial_no: ress.data.user.serial_no
                 });
@@ -58,7 +58,7 @@ const editAbsensi = () => {
     const onFinish = values => {
         const body = {
             id: id,
-            idKaryawan: values.id,
+            nik: values.id,
             date: datestring,
             serial_no: values.serial_no
         };

@@ -15,10 +15,12 @@ class CreateDataabsenTable extends Migration
     {
         Schema::create('data_absens', function (Blueprint $table) {
             $table->id();
-            $table->integer('idKaryawan');
+            $table->bigInteger('nik');
             $table->dateTime('date');
             $table->string('serial_no');
             $table->timestamps();
+
+            $table->foreign('nik')->references('nik')->on('data_karyawans');
         });
     }
 

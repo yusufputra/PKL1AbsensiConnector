@@ -43,6 +43,9 @@ import editUser from "./components/editUser";
 import AuthContextProvider, { UserContext } from "./authContextProvider";
 import tambahAbsensi from "./components/tambahAbsensi";
 import editAbsensi from "./components/editAbsensi";
+import daftarKaryawan from "./components/daftarKaryawan";
+import tambahKaryawan from "./components/tambahKaryawan";
+import editKaryawan from "./components/editKaryawan";
 
 function App() {
     // const [verified, setverified] = useState(false);
@@ -133,10 +136,13 @@ function App() {
                                 title="Karyawan"
                             >
                                 <Menu.Item key="2">
+                                    <Link to={"/daftarKaryawan"}>Daftar Karyawan</Link>
+                                </Menu.Item>
+                                <Menu.Item key="3">
                                     <Link to={"/absensi"}>Absensi</Link>
                                 </Menu.Item>
 
-                                <Menu.Item key="3">
+                                <Menu.Item key="4">
                                     <Link to={"/rekap"}>Rekap Absensi</Link>
                                 </Menu.Item>
                             </SubMenu>
@@ -145,19 +151,19 @@ function App() {
                                 icon={<MoneyCollectOutlined />}
                                 title="Data Gaji"
                             >
-                                <Menu.Item key="4">
+                                <Menu.Item key="5">
                                     <Link to={"/gaji"}>Gaji</Link>
                                 </Menu.Item>
 
-                                <Menu.Item key="5">
+                                <Menu.Item key="6">
                                     <Link to={"/tunjangan"}>Tujangan</Link>
                                 </Menu.Item>
 
-                                <Menu.Item key="6">
+                                <Menu.Item key="7">
                                     <Link to={"/totalgaji"}>Total Gaji</Link>
                                 </Menu.Item>
                             </SubMenu>
-                            <Menu.Item key="7" icon={<SettingOutlined />}>
+                            <Menu.Item key="8" icon={<SettingOutlined />}>
                                 <Link to={"/setting"}>Setting</Link>
                             </Menu.Item>
                         </Menu>
@@ -182,6 +188,7 @@ function App() {
                             <Route path="/setting" component={setting} />
                             <Route path="/tambahUser" component={tambahUser} />
                             <Route path="/editUser/:id" component={editUser} />
+                            <Route path="/editKaryawan/:nik" component={editKaryawan} />
                             <Route
                                 path="/tambahAbsensi"
                                 component={tambahAbsensi}
@@ -190,6 +197,8 @@ function App() {
                                 path="/editAbsensi/:id"
                                 component={editAbsensi}
                             />
+                            <Route exact path="/daftarKaryawan" component={daftarKaryawan} />
+                            <Route exact path="/tambahKaryawan" component={tambahKaryawan} />
                         </Switch>
                     </Layout>
                 </Layout>

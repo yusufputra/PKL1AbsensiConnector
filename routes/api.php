@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\karyawanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,7 +31,8 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::get('alluser','UserController@getAllUser');
     Route::get('user/{id}','UserController@getSpecifiedById');
     Route::get('absen/{id}','absenController@getSpecifiedById');
-
+    Route::get('karyawan/{nik}','karyawanController@getSpecifiedById');
+    Route::get('allKaryawan', 'karyawanController@getAllKaryawan');
 
     //post route
     Route::post('deleteuser', 'UserController@deleteUser');
@@ -38,5 +40,8 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::post('edituser', 'UserController@editUser');
     Route::post('deleteabsen', 'absenController@deleteAbsen');
     Route::post('editabsen', 'absenController@editAbsen');
+    Route::post('inputKaryawan', 'karyawanController@inputKaryawan');
+    Route::post('deleteKaryawan', 'karyawanController@deleteKaryawan');
+    Route::post('editKaryawan', 'karyawanController@editKaryawan');
 
 });

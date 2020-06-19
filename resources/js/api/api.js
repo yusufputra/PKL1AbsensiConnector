@@ -12,6 +12,11 @@ const API_CONSTANT_MAP = {
     "deleteAbsen" : `${BASE_API}/deleteabsen`,
     "getAbsenbyId" : `${BASE_API}/absen/`,
     "editAbsen" : `${BASE_API}/editabsen`,
+    "getAllKaryawan" : `${BASE_API}/allKaryawan`,
+    "inputKaryawan" : `${BASE_API}/inputKaryawan`,
+    "deleteKaryawan" : `${BASE_API}/deleteKaryawan`,
+    "getKaryawanbyId" : `${BASE_API}/karyawan/`,
+    "editKaryawan" : `${BASE_API}/editKaryawan/`,
 }
 
 module.exports=API_CONSTANT_MAP;

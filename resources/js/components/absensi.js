@@ -50,8 +50,8 @@ const absensi = () => {
         },
         {
             title: "ID Member",
-            dataIndex: "idKaryawan",
-            key: "idKaryawan"
+            dataIndex: "nik",
+            key: "nik"
         },
         {
             title: "Date",
