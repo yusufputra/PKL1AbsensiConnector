@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Breadcrumb, Table, Layout, Tag, Space, Button } from "antd";
+import { Breadcrumb, Table, Layout, Select, Space, Button, Input } from "antd";
 import { Link } from "react-router-dom";
 import { MoneyCollectOutlined } from "@ant-design/icons";
 import { UserContext } from "../authContextProvider";
@@ -8,8 +8,14 @@ import api from "../api/api";
 import currencyFormatter from "currency-formatter";
 
 const { Content } = Layout;
+const { Option } = Select;
 const totalGaji = () => {
+    const [tempgaji, setTempgaji] = useState([]);
     const [gaji, setgaji] = useState([]);
+    const [filter, setFilter] = useState({
+        bulan: "All",
+        tahun: "All"
+    });
     useEffect(() => {
         Axios.get(api.getGaji, {
             headers: {
@@ -17,6 +23,7 @@ const totalGaji = () => {
             }
         }).then(ress => {
             setgaji(ress.data);
+            setTempgaji(ress.data);
         });
     }, []);
     const { user } = useContext(UserContext);
@@ -56,9 +63,8 @@ const totalGaji = () => {
         },
         {
             title: "Bulan",
-            dataIndex: "bulan",
             key: "bulan",
-            render: data => {
+            render: record => {
                 const months = [
                     "Januari",
                     "Februari",
@@ -73,7 +79,7 @@ const totalGaji = () => {
                     "November",
                     "Desember"
                 ];
-                return months[parseInt(data)];
+                return `${months[parseInt(record.bulan)]} - ${record.tahun}`;
             }
         },
         {
@@ -153,6 +159,104 @@ const totalGaji = () => {
                         </Button>
                     </Link>
                 )}
+                <br />
+                <Space style={{ marginTop: 10 }}>
+                    Bulan :
+                    <Select
+                        placeholder="All"
+                        style={{ width: 120 }}
+                        onChange={value => {
+                            console.log(value);
+                            setFilter({
+                                bulan: value,
+                                tahun: filter.tahun
+                            });
+                            if (filter.tahun == "All") {
+                                if (value == "All") {
+                                    setgaji(tempgaji);
+                                } else {
+                                    setgaji(
+                                        tempgaji.filter(item => {
+                                            return item.bulan == value;
+                                        })
+                                    );
+                                }
+                            } else {
+                                if (value == "All") {
+                                    setgaji(
+                                        tempgaji.filter(item => {
+                                            return item.tahun == filter.tahun;
+                                        })
+                                    );
+                                } else {
+                                    setgaji(
+                                        tempgaji.filter(item => {
+                                            return (
+                                                item.tahun == filter.tahun &&
+                                                item.bulan == value
+                                            );
+                                        })
+                                    );
+                                }
+                            }
+                        }}
+                    >
+                        <Option value="All">All</Option>
+                        <Option value="0">Januari</Option>
+                        <Option value="1">Februari</Option>
+                        <Option value="2">Maret</Option>
+                        <Option value="3">April</Option>
+                        <Option value="4">Mei</Option>
+                        <Option value="5">Juni</Option>
+                        <Option value="6">Juli</Option>
+                        <Option value="7">Agustus</Option>
+                        <Option value="8">September</Option>
+                        <Option value="9">Oktober</Option>
+                        <Option value="10">November</Option>
+                        <Option value="11">Desember</Option>
+                    </Select>
+                    Tahun :
+                    <Input
+                        onChange={e => {
+                            console.log(e.target.value == "");
+                            setFilter({
+                                bulan: filter.bulan,
+                                tahun:
+                                    e.target.value == ""
+                                        ? "All"
+                                        : e.target.value
+                            });
+                            if (e.target.value == "") {
+                                if (filter.bulan == "All") {
+                                    setgaji(tempgaji);
+                                } else {
+                                    setgaji(
+                                        tempgaji.filter(item => {
+                                            return item.bulan == filter.bulan;
+                                        })
+                                    );
+                                }
+                            } else {
+                                if (filter.bulan == "All") {
+                                    setgaji(
+                                        tempgaji.filter(item => {
+                                            return item.tahun == e.target.value;
+                                        })
+                                    );
+                                } else {
+                                    setgaji(
+                                        tempgaji.filter(item => {
+                                            return (
+                                                item.tahun == e.target.value &&
+                                                item.bulan == filter.bulan
+                                            );
+                                        })
+                                    );
+                                }
+                            }
+                        }}
+                    />
+                </Space>
                 <Table columns={columns} dataSource={gaji} />
             </Content>
         </div>
