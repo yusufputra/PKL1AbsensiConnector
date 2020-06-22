@@ -1,72 +1,137 @@
-import React from "react";
-import { Breadcrumb, Table, Layout, Tag, Space } from "antd";
+import React, { useContext, useEffect, useState } from "react";
+import { Breadcrumb, Table, Layout, Tag, Space, Button } from "antd";
+import { Link } from "react-router-dom";
+import { MoneyCollectOutlined } from "@ant-design/icons";
+import { UserContext } from "../authContextProvider";
+import Axios from "axios";
+import api from "../api/api";
+import currencyFormatter from "currency-formatter";
 
 const { Content } = Layout;
 const totalGaji = () => {
+    const [gaji, setgaji] = useState([]);
+    useEffect(() => {
+        Axios.get(api.getGaji, {
+            headers: {
+                Authorization: "Bearer " + localStorage.token
+            }
+        }).then(ress => {
+            setgaji(ress.data);
+        });
+    }, []);
+    const { user } = useContext(UserContext);
+    const deleteGaji = id => {
+        console.log("clicked " + id);
+        Axios.post(
+            api.deleteGaji,
+            { id: id },
+            {
+                headers: {
+                    Authorization: "Bearer " + localStorage.token
+                }
+            }
+        )
+            .then(ress => {
+                alert("deleted");
+                setgaji(
+                    gaji.filter(item => {
+                        return item.id != id;
+                    })
+                );
+            })
+            .catch(error => {
+                alert(error);
+            });
+    };
     const columns = [
         {
-            title: "Name",
-            dataIndex: "name",
-            key: "name",
-            render: text => <a>{text}</a>
+            title: "ID",
+            dataIndex: "id",
+            key: "id"
         },
         {
-            title: "Jabatan",
-            dataIndex: "jabatan",
-            key: "jabatan"
+            title: "NIK",
+            dataIndex: "nik",
+            key: "nik"
+        },
+        {
+            title: "Bulan",
+            dataIndex: "bulan",
+            key: "bulan",
+            render: data => {
+                const months = [
+                    "Januari",
+                    "Februari",
+                    "Maret",
+                    "April",
+                    "Mei",
+                    "Juni",
+                    "Juli",
+                    "Agustus",
+                    "September",
+                    "Oktober",
+                    "November",
+                    "Desember"
+                ];
+                return months[parseInt(data)];
+            }
         },
         {
             title: "Gaji Pokok",
-            dataIndex: "pokok",
-            key: "pokok"
+            dataIndex: "gaji_pokok",
+            key: "gaji_pokok",
+            render: record => {
+                return currencyFormatter.format(record, { code: "IDR" });
+            }
         },
         {
-            title: "Tunjangan",
-            dataIndex: "tunjangan",
-            key: "tunjangan"
+            title: "BPJS",
+            dataIndex: "bpjs",
+            key: "bpjs",
+            render: record => {
+                return currencyFormatter.format(record, { code: "IDR" });
+            }
+        },
+        {
+            title: "PPh21",
+            dataIndex: "pph21",
+            key: "pph21",
+            render: record => {
+                return currencyFormatter.format(record, { code: "IDR" });
+            }
         },
         {
             title: "Total Gaji",
-            dataIndex: "total",
-            key: "total"
+            key: "total",
+            render: record => {
+                return currencyFormatter.format(
+                    record.gaji_pokok + record.bpjs - record.pph21,
+                    { code: "IDR" }
+                );
+            }
         },
         {
             title: "Action",
             key: "action",
-            render: (text, record) => (
-                <Space size="middle">
-                    <a>Detail</a>
-                </Space>
-            )
+            render: record => {
+                return (
+                    user.role == 1 && (
+                        <Space size="middle">
+                            <Link to={`/editgaji/${record.id}`}>Edit</Link>
+                            <Link
+                                onClick={() => {
+                                    deleteGaji(record.id);
+                                }}
+                            >
+                                Delete
+                            </Link>
+                        </Space>
+                    )
+                );
+            }
         }
     ];
 
-    const data = [
-        {
-            key: "1",
-            name: "John Brown",
-            jabatan: "CEO",
-            pokok: "Rp 10.000.000",
-            tunjangan: "Rp 5.000.000",
-            total: "Rp 15.000.000"
-        },
-        {
-            key: "2",
-            name: "John Brown",
-            jabatan: "CEO",
-            pokok: "Rp 10.000.000",
-            tunjangan: "Rp 5.000.000",
-            total: "Rp 15.000.000"
-        },
-        {
-            key: "3",
-            name: "John Brown",
-            jabatan: "CEO",
-            pokok: "Rp 10.000.000",
-            tunjangan: "Rp 5.000.000",
-            total: "Rp 15.000.000"
-        },
-    ];
     return (
         <div>
             <Breadcrumb style={{ margin: "16px 0" }}>
@@ -81,7 +146,14 @@ const totalGaji = () => {
                     minHeight: 280
                 }}
             >
-                <Table columns={columns} dataSource={data} />
+                {user.role == 1 && (
+                    <Link to={"/inputgaji"}>
+                        <Button type="primary" icon={<MoneyCollectOutlined />}>
+                            Input Gaji
+                        </Button>
+                    </Link>
+                )}
+                <Table columns={columns} dataSource={gaji} />
             </Content>
         </div>
     );

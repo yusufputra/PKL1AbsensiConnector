@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DataKaryawan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class karyawanController extends Controller
 {
@@ -97,7 +98,7 @@ class karyawanController extends Controller
         }
 
         $data = DataKaryawan::where('nik', $request->nik)->first();
-        if($data){
+        if ($data) {
             $data->nik = $request->nik_baru;
             $data->nama = $request->nama;
             $data->nip = $request->nip;
@@ -111,8 +112,19 @@ class karyawanController extends Controller
             $data->status_pegawai = $request->status;
             $data->save();
             return response()->json(["message" => "ketemu nih", "data" => $data]);
-        }else{
+        } else {
             return response()->json(["message" => "karyawan tidak ditemukan"], 404);
+        }
+    }
+
+    public function searchKaryawan(Request $request)
+    {
+        // $pegawai = DB::table('data_karyawans')->where('pegawai_nama', 'like', "%", $request->nik, "%");
+        $pegawai = DataKaryawan::where('nik','like','%'.$request->nik.'%')->get();
+        if (sizeof($pegawai)>0) {
+            return response()->json(['data'=> $pegawai]);
+        } else {
+            return response()->json(['message'=> 'karyawan not found']);
         }
     }
 }

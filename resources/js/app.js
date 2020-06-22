@@ -32,9 +32,7 @@ import api from "./api/api";
 import "./css/menu.css";
 import absensi from "./components/absensi";
 import rekap from "./components/rekap";
-import gaji from "./components/gaji";
 import totalGaji from "./components/totalGaji";
-import tunjangan from "./components/tunjangan";
 import backgound from "./assets/img/BGHalaman.svg";
 import Dashboard from "./components/Dashboard";
 import setting from "./components/setting";
@@ -46,6 +44,8 @@ import editAbsensi from "./components/editAbsensi";
 import daftarKaryawan from "./components/daftarKaryawan";
 import tambahKaryawan from "./components/tambahKaryawan";
 import editKaryawan from "./components/editKaryawan";
+import inputGaji from "./components/inputGaji";
+import editGaji from "./components/editGaji";
 
 function App() {
     // const [verified, setverified] = useState(false);
@@ -136,7 +136,9 @@ function App() {
                                 title="Karyawan"
                             >
                                 <Menu.Item key="2">
-                                    <Link to={"/daftarKaryawan"}>Daftar Karyawan</Link>
+                                    <Link to={"/daftarKaryawan"}>
+                                        Daftar Karyawan
+                                    </Link>
                                 </Menu.Item>
                                 <Menu.Item key="3">
                                     <Link to={"/absensi"}>Absensi</Link>
@@ -151,19 +153,12 @@ function App() {
                                 icon={<MoneyCollectOutlined />}
                                 title="Data Gaji"
                             >
+
                                 <Menu.Item key="5">
-                                    <Link to={"/gaji"}>Gaji</Link>
-                                </Menu.Item>
-
-                                <Menu.Item key="6">
-                                    <Link to={"/tunjangan"}>Tujangan</Link>
-                                </Menu.Item>
-
-                                <Menu.Item key="7">
                                     <Link to={"/totalgaji"}>Total Gaji</Link>
                                 </Menu.Item>
                             </SubMenu>
-                            <Menu.Item key="8" icon={<SettingOutlined />}>
+                            <Menu.Item key="6" icon={<SettingOutlined />}>
                                 <Link to={"/setting"}>Setting</Link>
                             </Menu.Item>
                         </Menu>
@@ -180,15 +175,16 @@ function App() {
                     >
                         <Switch>
                             <Route exact path="/" component={Dashboard} />
-                            <Route exact path="/absensi" component={absensi} />
+                            <Route path="/absensi" component={absensi} />
                             <Route path="/rekap" component={rekap} />
-                            <Route path="/gaji" component={gaji} />
-                            <Route path="/tunjangan" component={tunjangan} />
                             <Route path="/totalgaji" component={totalGaji} />
                             <Route path="/setting" component={setting} />
                             <Route path="/tambahUser" component={tambahUser} />
                             <Route path="/editUser/:id" component={editUser} />
-                            <Route path="/editKaryawan/:nik" component={editKaryawan} />
+                            <Route
+                                path="/editKaryawan/:nik"
+                                component={editKaryawan}
+                            />
                             <Route
                                 path="/tambahAbsensi"
                                 component={tambahAbsensi}
@@ -197,8 +193,16 @@ function App() {
                                 path="/editAbsensi/:id"
                                 component={editAbsensi}
                             />
-                            <Route exact path="/daftarKaryawan" component={daftarKaryawan} />
-                            <Route exact path="/tambahKaryawan" component={tambahKaryawan} />
+                            <Route
+                                path="/daftarKaryawan"
+                                component={daftarKaryawan}
+                            />
+                            <Route
+                                path="/tambahKaryawan"
+                                component={tambahKaryawan}
+                            />
+                            <Route path="/inputGaji" component={inputGaji} />
+                            <Route path="/editGaji/:id" component={editGaji} />
                         </Switch>
                     </Layout>
                 </Layout>
