@@ -6,13 +6,13 @@ import {
     Input,
     Button,
     Select,
-    DatePicker
+    DatePicker,
+    AutoComplete
 } from "antd";
 import { useHistory } from "react-router-dom";
 import Axios from "axios";
 import api from "../api/api";
 
-const { Option } = Select;
 const { Content } = Layout;
 const layout = {
     labelCol: { span: 4 },
@@ -25,14 +25,33 @@ const tailLayout = {
 const tambahAbsensi = () => {
     const history = useHistory();
     const [datestring, setDatestring] = useState();
+    const [search, setSearch] = useState([]);
     function onChange(value, dateString) {
         console.log("Selected Time: ", value);
         console.log("Formatted Selected Time: ", dateString);
         setDatestring(dateString);
     }
+    const handleSearch = value => {
+        Axios.post(
+            api.searchKaryawan,
+            { nik: value },
+            {
+                headers: {
+                    Authorization: "Bearer " + localStorage.token
+                }
+            }
+        ).then(ress => {
+            console.log(ress.data);
+            if (ress.data.data) {
+                setSearch(ress.data.data);
+            } else {
+                setSearch([]);
+            }
+        });
+    };
     const onFinish = values => {
         const body = {
-            id: values.id,
+            id: values.id.toString(),
             date: datestring,
             serial_no: values.serial_no
         };
@@ -74,16 +93,30 @@ const tambahAbsensi = () => {
                     onFinishFailed={onFinishFailed}
                 >
                     <Form.Item
-                        label="Member ID"
+                        label="NIK"
                         name="id"
                         rules={[
                             {
                                 required: true,
-                                message: "Please member id!"
+                                message: "Please input NIK!"
                             }
                         ]}
                     >
-                        <Input />
+                        <AutoComplete
+                            onChange={handleSearch}
+                            notFoundContent="Not Found"
+                        >
+                            {search.map(data => {
+                                return (
+                                    <AutoComplete.Option
+                                        key={data.nik}
+                                        value={data.nik}
+                                    >
+                                        {data.nik + " - " + data.nama}
+                                    </AutoComplete.Option>
+                                );
+                            })}
+                        </AutoComplete>
                     </Form.Item>
                     <Form.Item
                         label="Date Time"

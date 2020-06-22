@@ -40,7 +40,7 @@ const editAbsensi = () => {
                 setDatestring(ress.data.user.date);
                 form.setFieldsValue({
                     id: ress.data.user.nik,
-                    date: moment(ress.data.user.date, "MMMM Do YYYY h:mm:ss"),
+                    date: moment(ress.data.user.date, "YYYY-MM-DD h:mm:ss"),
                     serial_no: ress.data.user.serial_no
                 });
             })
@@ -58,7 +58,7 @@ const editAbsensi = () => {
     const onFinish = values => {
         const body = {
             id: id,
-            nik: values.id,
+            nik: values.id.toString(),
             date: datestring,
             serial_no: values.serial_no
         };
@@ -105,16 +105,16 @@ const editAbsensi = () => {
                     form={form}
                 >
                     <Form.Item
-                        label="Member ID"
+                        label="NIK"
                         name="id"
                         rules={[
                             {
                                 required: true,
-                                message: "Please member id!"
+                                message: "Please NIK!"
                             }
                         ]}
                     >
-                        <Input />
+                        <Input disabled />
                     </Form.Item>
                     <Form.Item
                         label="Date Time"
