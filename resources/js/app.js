@@ -101,16 +101,16 @@ function App() {
         };
         return (
             <Layout>
-                <Header className="header">
+                <Header className="header" style={{backgroundColor:"#47a2bf"}}>
                     {/* <div className="logo" /> */}
                     <Menu
                         theme="dark"
                         mode="horizontal"
-                        style={{ float: "right" }}
+                        style={{ float: "right",backgroundColor:"#47a2bf" }}
                     >
                         <Menu.Item key="1">Welcome!</Menu.Item>
                         <Menu.Item key="2">
-                            <Button onClick={logout} type="primary" danger>
+                            <Button style={{backgroundColor:"#f05d32"}} onClick={logout} type="primary" danger>
                                 Logout
                             </Button>
                         </Menu.Item>

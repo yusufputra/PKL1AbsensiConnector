@@ -1,68 +1,59 @@
-import React from "react";
-import { Breadcrumb, Layout, Row, Col, Divider } from "antd";
-import {
-    LineChart,
-    Line,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    Legend
-} from "recharts";
+import React, { useState, useEffect } from "react";
+import { Breadcrumb, Layout, Row, Col, Divider, Statistic } from "antd";
+import { StackedColumn } from "@ant-design/charts";
+import { DislikeOutlined, LikeOutlined } from "@ant-design/icons";
+import Axios from "axios";
+import api from "../api/api";
 
 const { Content } = Layout;
-const data = [
-    {
-        name: "Page A",
-        late: 4000,
-        early: 2400,
-        amt: 2400
-    },
-    {
-        name: "Page B",
-        late: 3000,
-        early: 1398,
-        amt: 2210
-    },
-    {
-        name: "Page C",
-        late: 2000,
-        early: 9800,
-        amt: 2290
-    },
-    {
-        name: "Page D",
-        late: 2780,
-        early: 3908,
-        amt: 2000
-    },
-    {
-        name: "Page E",
-        late: 1890,
-        early: 4800,
-        amt: 2181
-    },
-    {
-        name: "Page F",
-        late: 2390,
-        early: 3800,
-        amt: 2500
-    },
-    {
-        name: "Page G",
-        late: 3490,
-        early: 4300,
-        amt: 2100
-    }
-];
 const Dashboard = () => {
+    const [data, setData] = useState([]);
+    useEffect(() => {
+        Axios.get(api.statistik, {
+            headers: {
+                Authorization: "Bearer " + localStorage.token
+            }
+        })
+            .then(ress => {
+                console.log(ress);
+                setData(ress.data);
+            })
+            .catch(error => {
+                alert(error.response);
+                console.log(error.response);
+            });
+    }, []);
+    const config = {
+        forceFit: true,
+        title: {
+            visible: true,
+            text: "Statistik Kehadiran"
+        },
+        description: {
+            visible: true,
+            text: "Kehadiran berdasarkan hari dan jam selama satu mingggu terakhir"
+        },
+        padding: "auto",
+        data: data.statistik,
+        xField: "tanggal",
+        yField: "jumlah",
+        stackField: "jam",
+        Color: ["# ae331b", "# f27957", "#dadada", "# 609db7", "# 1a6179"],
+        yAxis: { min: 0 },
+        xAxis: { max: 7 },
+        label: { visible: false },
+        connectedArea: {
+            visible: true,
+            triggerOn: false
+        }
+    };
     return (
         <div>
             <Breadcrumb style={{ margin: "16px 0" }}>
                 <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
             </Breadcrumb>
             <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                <Col span={12}>
+                <Col span={18}>
                     <Content
                         className="site-layout-background"
                         style={{
@@ -71,38 +62,10 @@ const Dashboard = () => {
                             minHeight: 280
                         }}
                     >
-                        Early and Late Results <br />
-                        <LineChart
-                            width={500}
-                            height={300}
-                            data={data}
-                            margin={{
-                                top: 5,
-                                right: 30,
-                                left: 20,
-                                bottom: 5
-                            }}
-                        >
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Legend />
-                            <Line
-                                type="monotone"
-                                dataKey="early"
-                                stroke="#8884d8"
-                                activeDot={{ r: 8 }}
-                            />
-                            <Line
-                                type="monotone"
-                                dataKey="late"
-                                stroke="#82ca9d"
-                            />
-                        </LineChart>
+                        <StackedColumn {...config} />
                     </Content>
                 </Col>
-                <Col span={12}>
+                <Col span={6}>
                     <Content
                         className="site-layout-background"
                         style={{
@@ -111,53 +74,37 @@ const Dashboard = () => {
                             minHeight: 280
                         }}
                     >
-                        Early and Late Results <br />
-                        <LineChart
-                            width={500}
-                            height={300}
-                            data={data}
-                            margin={{
-                                top: 5,
-                                right: 30,
-                                left: 20,
-                                bottom: 5
-                            }}
-                        >
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Legend />
-                            <Line
-                                type="monotone"
-                                dataKey="early"
-                                stroke="#8884d8"
-                                activeDot={{ r: 8 }}
-                            />
-                            <Line
-                                type="monotone"
-                                dataKey="late"
-                                stroke="#82ca9d"
-                            />
-                        </LineChart>
-                    </Content>
-                </Col>
-            </Row>
-            <Divider
-                orientation="left"
-                style={{ color: "#333", fontWeight: "normal" }}
-            />
-            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                <Col span={24}>
-                    <Content
-                        className="site-layout-background"
-                        style={{
-                            padding: 24,
-                            margin: 0,
-                            minHeight: 280
-                        }}
-                    >
-                        ini konten
+                        <Row>
+                            <Col>
+                                {Date()} <br />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Statistic
+                                    title="In Time"
+                                    value={
+                                        data.intime == undefined
+                                            ? 0
+                                            : data.intime[0].intime
+                                    }
+                                    prefix={<LikeOutlined />}
+                                />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Statistic
+                                    title="Late"
+                                    value={
+                                        data.late == undefined
+                                            ? 0
+                                            : data.late[0].late
+                                    }
+                                    prefix={<DislikeOutlined />}
+                                />
+                            </Col>
+                        </Row>
                     </Content>
                 </Col>
             </Row>

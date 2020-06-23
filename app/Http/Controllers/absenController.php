@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\dataAbsen;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 use function Symfony\Component\VarDumper\Dumper\esc;
@@ -84,24 +85,32 @@ class absenController extends Controller
         }
 
         $data = dataAbsen::where('id', $request->id)->first();
-            if ($data) {
-                $data->nik =  $request->nik;
-                $data->date = $request->date;
-                $data->serial_no = $request->serial_no;
-                $data->save();
-                return response()->json(["message" => "success", "user" => $data], 200);
-            } else {
-                return response()->json(["message" => "data tidak ditemukan"], 404);
-            }
+        if ($data) {
+            $data->nik =  $request->nik;
+            $data->date = $request->date;
+            $data->serial_no = $request->serial_no;
+            $data->save();
+            return response()->json(["message" => "success", "user" => $data], 200);
+        } else {
+            return response()->json(["message" => "data tidak ditemukan"], 404);
+        }
     }
 
-    // public function getDataBySerialNum($Sno)
-    // {
-    //     $data = dataAbsen::where('serial_no', $Sno)->get();
-    //     if(sizeof($data)>0){
-    //         return response()->json(['data' => $data],200);
-    //     }else{
-    //         return response()->json(['error' => "data tidak ditemukan"],404);
-    //     }
-    // }
+    public function getStatistic()
+    {
+        $statistik = DB::table('data_absens')
+            ->select(DB::raw('SUBSTRING_INDEX(`date`," ",1) as "tanggal", SUBSTRING_INDEX(SUBSTRING_INDEX(`date`," ",-1),":",1) as "jam", COUNT(*) AS jumlah'))
+            ->groupByRaw('tanggal, jam')
+            ->orderBy('date', 'desc')
+            ->get();
+        foreach ($statistik as $key => $data) {
+            $time = strtotime($data->tanggal);
+            $data->tanggal = $data->tanggal . " - " . date('l', $time);
+        }
+        $late = DB::select(DB::raw("SELECT SUM(jumlah) as late from (SELECT SUBSTRING_INDEX(`date`,' ',1) as 'tanggal', CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(`date`,' ',-1),':',1) AS int) as 'jam', COUNT(*) AS jumlah FROM `data_absens` GROUP BY tanggal, jam ORDER BY date desc) rawData WHERE jam >= 8 and tanggal=:tgl"),array("tgl" => date('Y-m-d')));
+        $intime = DB::select(DB::raw("SELECT SUM(jumlah) as intime from (SELECT SUBSTRING_INDEX(`date`,' ',1) as 'tanggal', CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(`date`,' ',-1),':',1) AS int) as 'jam', COUNT(*) AS jumlah FROM `data_absens` GROUP BY tanggal, jam ORDER BY date desc) rawData WHERE jam < 8 and tanggal=:tgl"),array("tgl" => date('Y-m-d')));
+        return response()->json(["statistik" => $statistik, "late" => $late, "intime" => $intime]);
+
+
+    }
 }

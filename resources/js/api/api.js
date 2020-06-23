@@ -23,6 +23,7 @@ const API_CONSTANT_MAP = {
     "deleteGaji" : `${BASE_API}/deleteGaji`,
     "getGajibyId" : `${BASE_API}/gaji/`,
     "editGaji" : `${BASE_API}/editGaji`,
+    "statistik" : `${BASE_API}/statistik`,
 }
 
 module.exports=API_CONSTANT_MAP;

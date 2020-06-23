@@ -31,6 +31,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::get('alluser', 'UserController@getAllUser');
     Route::get('user/{id}', 'UserController@getSpecifiedById');
     Route::get('absen/{id}', 'absenController@getSpecifiedById');
+    Route::get('statistik', 'absenController@getStatistic');
     Route::get('karyawan/{nik}', 'karyawanController@getSpecifiedById');
     Route::get('gaji/{id}', 'gajiController@getGajibyId');
     Route::get('allKaryawan', 'karyawanController@getAllKaryawan');
