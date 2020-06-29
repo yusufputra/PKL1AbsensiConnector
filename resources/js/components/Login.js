@@ -19,9 +19,9 @@ const { Title } = Typography;
 
 const Login = () => {
     const [error, setError] = useState(false);
-    const [loading, setloading] = useState(false)
+    const [loading, setloading] = useState(false);
     const handleSubmit = values => {
-        setloading(true)
+        setloading(true);
         console.log(values);
         const data = {
             email: values.email,
@@ -32,13 +32,13 @@ const Login = () => {
                 if (ress.status == 200) {
                     localStorage.token = ress.data.token;
                 }
-                setloading(false)
+                setloading(false);
                 window.location.reload();
             })
             .catch(error => {
                 setError(true);
                 console.log(error.response);
-                setloading(false)
+                setloading(false);
             });
     };
     return (
@@ -95,16 +95,6 @@ const Login = () => {
                                     }
                                 ]}
                             >
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        flex: 1,
-                                        justifyContent: "space-between"
-                                    }}
-                                >
-                                    <Checkbox>Remember me</Checkbox>
-                                    <a href="">Forgot password</a>
-                                </div>
                                 <div style={{ textAlign: "center" }}>
                                     <Button
                                         block
@@ -114,7 +104,6 @@ const Login = () => {
                                     >
                                         Log in
                                     </Button>
-                                    Or <a href="">register now!</a>
                                 </div>
                             </Form.Item>
                         </Form>

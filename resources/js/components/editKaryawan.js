@@ -87,7 +87,7 @@ const editKaryawan = () => {
         <div>
             <Breadcrumb style={{ margin: "16px 0" }}>
                 <Breadcrumb.Item>Karyawan</Breadcrumb.Item>
-                <Breadcrumb.Item>Tambah Karyawan</Breadcrumb.Item>
+                <Breadcrumb.Item>Edit Karyawan</Breadcrumb.Item>
             </Breadcrumb>
             <Content
                 className="site-layout-background"

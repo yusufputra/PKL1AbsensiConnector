@@ -101,7 +101,7 @@ const editGaji = () => {
         <div>
             <Breadcrumb style={{ margin: "16px 0" }}>
                 <Breadcrumb.Item>Data Gaji</Breadcrumb.Item>
-                <Breadcrumb.Item>Input Gaji</Breadcrumb.Item>
+                <Breadcrumb.Item>Edit Gaji</Breadcrumb.Item>
             </Breadcrumb>
             <Content
                 className="site-layout-background"
