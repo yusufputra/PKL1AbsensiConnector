@@ -25,7 +25,6 @@ const editKaryawan = () => {
             }
         })
             .then(ress => {
-                console.log(ress.data);
                 form.setFieldsValue({
                     nik: ress.data.user.nik,
                     nama: ress.data.user.nama,
@@ -37,10 +36,7 @@ const editKaryawan = () => {
                     no_telepon: ress.data.user.no_telepon,
                     agama: ress.data.user.agama,
                     jabatan: ress.data.user.jabatan,
-                    status:
-                        ress.data.user.status_pegawawai == 1
-                            ? "Aktif"
-                            : "Tidak Aktif"
+                    status: ress.data.user.status_pegawai.toString()
                 });
             })
             .catch(error => {
@@ -62,7 +58,7 @@ const editKaryawan = () => {
             no_telepon: values.no_telepon,
             agama: values.agama,
             jabatan: values.jabatan,
-            status: values.status == "Aktif" ? 1 : 0
+            status: values.status
         };
         console.log(body);
         Axios.post(api.editKaryawan, body, {
@@ -228,8 +224,8 @@ const editKaryawan = () => {
                         ]}
                     >
                         <Select placeholder={"Aktif"} style={{ width: 240 }}>
-                            <Option value={"Aktif"}>Aktif</Option>
-                            <Option value={"Tidak Aktif"}>Tidak Aktif</Option>
+                            <Option value="1">Aktif</Option>
+                            <Option value="0">Tidak Aktif</Option>
                         </Select>
                     </Form.Item>
 
