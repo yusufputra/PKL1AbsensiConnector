@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Breadcrumb, Form, Layout, Input, Button, Select } from "antd";
+import { Breadcrumb, Form, Layout, Input, Button, Select, notification } from "antd";
 import { useHistory, useParams } from "react-router-dom";
 import Axios from "axios";
 import api from "../api/api";
@@ -12,6 +12,12 @@ const layout = {
 };
 const tailLayout = {
     wrapperCol: { offset: 4, span: 10 }
+};
+const toggleNotif = (type, message) => {
+    notification[type]({
+        message: message,
+        description: "will be disappear in 4 seconds"
+    });
 };
 const editKaryawan = () => {
     let { nik } = useParams();
@@ -67,12 +73,12 @@ const editKaryawan = () => {
             }
         })
             .then(ress => {
-                alert("Karyawan edited");
+                toggleNotif("success", "Berhasil mengedit karyawan");
                 history.push("/daftarKaryawan");
             })
             .catch(error => {
                 console.log(error.response);
-                alert(error);
+                toggleNotif("error", error.response.statusText);
             });
     };
 
@@ -147,6 +153,7 @@ const editKaryawan = () => {
                             <Option value={"S1"}>S1</Option>
                             <Option value={"S2"}>S2</Option>
                             <Option value={"S3"}>S3</Option>
+                            <Option value={"Lainnya"}>Lainnya</Option>
                         </Select>
                     </Form.Item>
                     <Form.Item

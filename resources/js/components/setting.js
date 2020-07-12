@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Breadcrumb, Table, Layout, Space, Button } from "antd";
+import { Breadcrumb, Table, Layout, Space, Button, notification } from "antd";
 import { UserAddOutlined } from "@ant-design/icons";
 import Axios from "axios";
 import api from "../api/api";
@@ -7,6 +7,12 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../authContextProvider";
 
 const { Content } = Layout;
+const toggleNotif = (type, message) => {
+    notification[type]({
+        message: message,
+        description: "will be disappear in 4 seconds"
+    });
+};
 const setting = () => {
     const { user } = useContext(UserContext);
     const [data, setdata] = useState([]);
@@ -36,7 +42,7 @@ const setting = () => {
             }
         })
             .then(ress => {
-                alert("deleted");
+                toggleNotif("success", "Berhasil menghapus user");
                 setdata(
                     data.filter(item => {
                         return item.id != record;
@@ -44,7 +50,8 @@ const setting = () => {
                 );
             })
             .catch(error => {
-                alert(error);
+                console.log(error.response);
+                toggleNotif("error", error.response.statusText);
             });
     };
 

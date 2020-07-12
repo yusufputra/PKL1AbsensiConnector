@@ -1,5 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Breadcrumb, Table, Layout, Select, Space, Button, Input } from "antd";
+import {
+    Breadcrumb,
+    Table,
+    Layout,
+    Select,
+    Space,
+    Button,
+    Input,
+    notification
+} from "antd";
 import { Link } from "react-router-dom";
 import { MoneyCollectOutlined } from "@ant-design/icons";
 import { UserContext } from "../authContextProvider";
@@ -9,6 +18,12 @@ import currencyFormatter from "currency-formatter";
 
 const { Content } = Layout;
 const { Option } = Select;
+const toggleNotif = (type, message) => {
+    notification[type]({
+        message: message,
+        description: "will be disappear in 4 seconds"
+    });
+};
 const totalGaji = () => {
     const [tempgaji, setTempgaji] = useState([]);
     const [gaji, setgaji] = useState([]);
@@ -39,7 +54,7 @@ const totalGaji = () => {
             }
         )
             .then(ress => {
-                alert("deleted");
+                toggleNotif("success", "Berhasil menghapus gaji");
                 setgaji(
                     gaji.filter(item => {
                         return item.id != id;
@@ -47,7 +62,8 @@ const totalGaji = () => {
                 );
             })
             .catch(error => {
-                alert(error);
+                console.log(error.response);
+                toggleNotif("error", error.response.statusText);
             });
     };
     const columns = [

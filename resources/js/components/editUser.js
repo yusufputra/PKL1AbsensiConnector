@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Breadcrumb, Form, Layout, Input, Button, Select } from "antd";
+import { Breadcrumb, Form, Layout, Input, Button, Select, notification } from "antd";
 import { useHistory, useParams } from "react-router-dom";
 import Axios from "axios";
 import api from "../api/api";
@@ -12,6 +12,12 @@ const layout = {
 };
 const tailLayout = {
     wrapperCol: { offset: 4, span: 10 }
+};
+const toggleNotif = (type, message) => {
+    notification[type]({
+        message: message,
+        description: "will be disappear in 4 seconds"
+    });
 };
 const editUser = () => {
     let { id } = useParams();
@@ -60,12 +66,12 @@ const editUser = () => {
             }
         })
             .then(ress => {
-                alert("User edited");
+                toggleNotif("success", "Berhasil mengedit user");
                 history.push("/setting");
             })
             .catch(error => {
                 console.log(error.response);
-                alert(error);
+                toggleNotif("error", error.response.statusText);
             });
     };
 

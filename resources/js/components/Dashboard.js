@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Breadcrumb, Layout, Row, Col, Divider, Statistic } from "antd";
 import { StackedColumn } from "@ant-design/charts";
-import { DislikeOutlined, LikeOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import Axios from "axios";
 import api from "../api/api";
 
@@ -31,7 +31,8 @@ const Dashboard = () => {
         },
         description: {
             visible: true,
-            text: "Kehadiran berdasarkan hari dan jam selama satu mingggu terakhir"
+            text:
+                "Kehadiran berdasarkan hari dan jam selama satu mingggu terakhir"
         },
         padding: "auto",
         data: data.statistik,
@@ -84,11 +85,13 @@ const Dashboard = () => {
                                 <Statistic
                                     title="In Time"
                                     value={
-                                        data.intime == undefined
+                                        data.length == 0
+                                            ? 0
+                                            : data.intime[0].intime == null
                                             ? 0
                                             : data.intime[0].intime
                                     }
-                                    prefix={<LikeOutlined />}
+                                    prefix={<CheckCircleOutlined />}
                                 />
                             </Col>
                         </Row>
@@ -97,11 +100,13 @@ const Dashboard = () => {
                                 <Statistic
                                     title="Late"
                                     value={
-                                        data.late == undefined
+                                        data.length == 0
+                                            ? 0
+                                            : data.late[0].late == null
                                             ? 0
                                             : data.late[0].late
                                     }
-                                    prefix={<DislikeOutlined />}
+                                    prefix={<CloseCircleOutlined />}
                                 />
                             </Col>
                         </Row>

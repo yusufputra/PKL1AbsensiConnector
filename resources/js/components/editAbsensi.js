@@ -6,7 +6,8 @@ import {
     Input,
     Button,
     Select,
-    DatePicker
+    DatePicker,
+    notification
 } from "antd";
 import { useHistory, useParams } from "react-router-dom";
 import Axios from "axios";
@@ -22,7 +23,12 @@ const layout = {
 const tailLayout = {
     wrapperCol: { offset: 4, span: 10 }
 };
-
+const toggleNotif = (type, message) => {
+    notification[type]({
+        message: message,
+        description: "will be disappear in 4 seconds"
+    });
+};
 const editAbsensi = () => {
     let { id } = useParams();
     const history = useHistory();
@@ -69,12 +75,12 @@ const editAbsensi = () => {
             }
         })
             .then(ress => {
-                alert("Absensi edited");
+                toggleNotif("success", "Berhasil mengedit absensi");
                 history.push("/absensi");
             })
             .catch(error => {
                 console.log(error.response);
-                alert(error);
+                toggleNotif("error", error.response.statusText);
             });
     };
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Breadcrumb, Form, Layout, Input, Button, Select } from "antd";
+import { Breadcrumb, Form, Layout, Input, Button, Select, notification } from "antd";
 import { useHistory } from "react-router-dom";
 import Axios from "axios";
 import api from "../api/api";
@@ -12,6 +12,12 @@ const layout = {
 };
 const tailLayout = {
     wrapperCol: { offset: 4, span: 10 }
+};
+const toggleNotif = (type, message) => {
+    notification[type]({
+        message: message,
+        description: "will be disappear in 4 seconds"
+    });
 };
 const tambahUser = () => {
     const history = useHistory();
@@ -29,12 +35,12 @@ const tambahUser = () => {
             }
         })
             .then(ress => {
-                alert("User Added");
+                toggleNotif("success", "Berhasil menambahkan user");
                 history.push("/setting");
             })
             .catch(error => {
                 console.log(error.response);
-                alert(error);
+                toggleNotif("error", error.response.statusText);
             });
     };
 

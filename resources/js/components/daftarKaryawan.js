@@ -1,5 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Breadcrumb, Table, Layout, Tag, Space, Button } from "antd";
+import {
+    Breadcrumb,
+    Table,
+    Layout,
+    Tag,
+    Space,
+    Button,
+    notification
+} from "antd";
 import { FieldTimeOutlined } from "@ant-design/icons";
 import Axios from "axios";
 import api from "../api/api";
@@ -7,6 +15,12 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../authContextProvider";
 
 const { Content } = Layout;
+const toggleNotif = (type, message) => {
+    notification[type]({
+        message: message,
+        description: "will be disappear in 4 seconds"
+    });
+};
 const daftarKaryawan = () => {
     const { user } = useContext(UserContext);
     const [data, setdata] = useState([]);
@@ -36,8 +50,8 @@ const daftarKaryawan = () => {
             }
         })
             .then(ress => {
-                console.log(ress.data)
-                alert("Absensi deleted");
+                console.log(ress.data);
+                toggleNotif("success", "Berhasil menghapus karyawan");
                 setdata(
                     data.filter(item => {
                         return item.nik != record;
@@ -46,7 +60,7 @@ const daftarKaryawan = () => {
             })
             .catch(error => {
                 console.log(error.response);
-                alert(error);
+                toggleNotif("error", error.response.statusText);
             });
     };
     const columns = [
